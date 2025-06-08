@@ -1,6 +1,6 @@
-package by.it.a_khmelev.lesson08;
+package by.it.group410971.shevchenko.lesson08;
 
-import by.it.a_khmelev.lesson07.A_EditDist;
+import by.it.group410971.shevchenko.lesson07.A_EditDist;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,22 +38,29 @@ Sample Output 2:
 
 public class A_Knapsack {
 
-    public int getMaxWeight(InputStream stream) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+    int getMaxWeight(InputStream stream) {
         Scanner scanner = new Scanner(stream);
-        int w=scanner.nextInt();
-        int n=scanner.nextInt();
-        int gold[]=new int[n];
+        int W = scanner.nextInt(); // Вместимость рюкзака
+        int n = scanner.nextInt(); // Количество вариантов золотых слитков
+        int[] gold = new int[n]; // Массив весов слитков
+
         for (int i = 0; i < n; i++) {
-            gold[i]=scanner.nextInt();
+            gold[i] = scanner.nextInt(); // Чтение весов слитков
         }
 
+        // Массив для хранения максимального веса для каждой вместимости
+        int[] dp = new int[W + 1];
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        // Динамическое программирование
+        for (int i = 0; i < n; i++) {
+            for (int j = gold[i]; j <= W; j++) {
+                dp[j] = Math.max(dp[j], dp[j - gold[i]] + gold[i]);
+            }
+        }
+
+        // Максимальный вес, который можно унести в рюкзаке
+        return dp[W];
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_Knapsack.class.getResourceAsStream("dataA.txt");
